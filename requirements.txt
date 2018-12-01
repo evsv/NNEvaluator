@@ -1,5 +1,8 @@
+absl-py==0.6.1
 apache-beam==2.8.0
+astor==0.7.1
 avro==1.8.2
+backports.weakref==1.0.post1
 certifi==2018.11.29
 chardet==3.0.4
 crcmod==1.7
@@ -10,6 +13,7 @@ fastavro==0.21.14
 funcsigs==1.0.2
 future==0.17.1
 futures==3.2.0
+gast==0.2.0
 grpcio==1.16.1
 h5py==2.8.0
 hdfs==2.2.1
@@ -18,6 +22,7 @@ idna==2.7
 Keras==2.2.4
 Keras-Applications==1.0.6
 Keras-Preprocessing==1.0.5
+Markdown==3.0.1
 mock==2.0.0
 numpy==1.15.4
 oauth2client==4.1.3
@@ -28,8 +33,8 @@ pyasn1==0.4.4
 pyasn1-modules==0.2.2
 pydot==1.2.4
 pyparsing==2.3.0
-pyreadline==2.1
 python-dateutil==2.7.5
+python-snappy==0.5
 pytz==2018.4
 PyVCF==0.6.8
 PyYAML==3.13
@@ -37,5 +42,9 @@ requests==2.20.1
 rsa==4.0
 scipy==1.1.0
 six==1.11.0
+tensorboard==1.12.0
+tensorflow==1.12.0
+termcolor==1.1.0
 typing==3.6.6
 urllib3==1.24.1
+Werkzeug==0.14.1
