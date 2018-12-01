@@ -5,7 +5,7 @@ STRING_TO_NUMBER = 1
 STRING_TO_DATE = 2
 FLOAT_TO_INT = 3
 NUMBER_TO_ENUM = 4
-STRING_TO_ENUM = 5
+TO_CATEGORICAL = 5
 
 def coerce_column(df, column_name, lint_code):
     """Coerce columns according to linter recommendation.
@@ -21,6 +21,19 @@ def coerce_column(df, column_name, lint_code):
         return string_to_date(df, column_name)
     elif lint_code == FLOAT_TO_INT:
         return float_to_int(df, column_name)
+    elif lint_code == TO_CATEGORICAL:
+        return to_categorical(df, column_name)
+
+def to_categorical(df, column_name):
+    """Encode a string column to a one-hot categorical column.
+
+    :param df: <Pandas Dataframe>
+    :param column_name: <String> the name of the column to coerce
+    :return: <Pandas Dataframe> return the modified dataframe
+    """
+    df = df.join(pd.get_dummies(df[column_name]))
+    df = df.drop(column_name, axis=1)
+    return df
 
 def string_to_number(df, column_name):
     """Coerce a string column to a numeric column.

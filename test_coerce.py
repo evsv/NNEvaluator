@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import unittest
 import zipfile
-from coerce import coerce_column, STRING_TO_DATE, STRING_TO_NUMBER, FLOAT_TO_INT
+from coerce import coerce_column, STRING_TO_DATE, STRING_TO_NUMBER, FLOAT_TO_INT, TO_CATEGORICAL
 
 class TestCoerce(unittest.TestCase):
 
@@ -24,9 +24,18 @@ class TestCoerce(unittest.TestCase):
         self.assertEqual("int32", df["nwound"].dtype)
 
     def test_string_to_date(self):
-        """Test string to date method."""
+        """Test string_to_date method."""
         df = coerce_column(self.df, "iyear", STRING_TO_DATE)
         self.assertEqual("datetime64[ns]", df["iyear"].dtype)
+
+    def test_to_categorical(self):
+        """Test to_categorical method."""
+        df = coerce_column(self.df, "attacktype1_txt", TO_CATEGORICAL)
+        try:
+            print(df["attacktype1_txt"].tail())
+            self.fail("Expected attacktype1_txt column to have been dropped from df")
+        except:
+            print(df.tail())
 
 if __name__ == "__main__":
     unittest.main()
