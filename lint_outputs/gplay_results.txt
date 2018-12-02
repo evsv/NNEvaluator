@@ -1,0 +1,98 @@
+The following linter(s) triggered on your dataset:
+* DateTimeAsStringDetector
+* DuplicateExampleDetector
+* NumberAsStringDetector
+
+
+================================================================================
+DateTimeAsStringDetector
+================================================================================
+A feature flagged by this linter contains strings that might represent dates
+or times.
+
+This is a lint because feeding the string directly into a model will cause each
+unique date[time] to become its own feature. This is fine if there are only a
+few unique values but the linear progression of time would be better modeled if
+the feature were represented as a number.
+
+Quickfix: convert the feature to a timestamp.
+-----
+Flagged features (and sample values):
+* Last Updated: 'August 2, 2018', 'August 3, 2018'
+* Size: '11M', '12M'
+================================================================================
+
+
+================================================================================
+DuplicateExampleDetector
+================================================================================
+This linter finds exactly duplicated Examples. It's possible that your data
+generation process actually permits duplicates or they're the result of missing
+entries.  For spurious duplicates, a few are usually fine, but a large number or
+Examples shared across train/val/test can be problematic and should be filtered.
+
+Quickfix: remove all but one of each Example.
+-----
+Found 483 exact duplicate examples, 10 of which are shown below.
+---------------------------------------------------------------------
+|     Android Ver      |         App          |       Category       
+---------------------------------------------------------------------
+| 'Varies with device' | 'Evernot... & Memos' |    'PRODUCTIVITY'    
+| 'Varies with device' | 'Learn l... Memrise' |     'EDUCATION'      
+|     '4.4 and up'     | 'CNN Bre...rld News' | 'NEWS_AND_MAGAZINES' 
+|     '4.1 and up'     | 'Paramed...Provider' |      'MEDICAL'       
+| 'Varies with device' | 'My Dres...n closet' |     'LIFESTYLE'      
+|    '4.0.3 and up'    |  'Sago Mini Babies'  |       'FAMILY'       
+|     '4.4 and up'     | 'Muscle ...y, Bones' |      'MEDICAL'       
+| 'Varies with device' | 'LINE: F...Messages' |   'COMMUNICATION'    
+| 'Varies with device' | 'Robinho... No Fees' |      'FINANCE'       
+| 'Varies with device' | 'ZEDGE\x...llpapers' |  'PERSONALIZATION'   
+---------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ Content Rating |     Current Ver      |        Genres        |    Installs    
+-------------------------------------------------------------------------------
+   'Everyone'   | 'Varies with device' |    'Productivity'    | '100,000,000+' 
+   'Everyone'   | 'Varies with device' |     'Education'      | '10,000,000+'  
+ 'Everyone 10+' |        '5.17'        |  'News & Magazines'  | '10,000,000+'  
+ 'Everyone 10+' |       '1.8.3'        |      'Medical'       |   '10,000+'    
+   'Everyone'   | 'Varies with device' |     'Lifestyle'      |   '500,000+'   
+   'Everyone'   |        '1.1'         | 'Educati...end Play' |   '10,000+'    
+   'Everyone'   |       '7.1.17'       |      'Medical'       |   '10,000+'    
+   'Everyone'   | 'Varies with device' |   'Communication'    | '500,000,000+' 
+   'Everyone'   | 'Varies with device' |      'Finance'       |  '1,000,000+'  
+     'Teen'     | 'Varies with device' |  'Personalization'   | '100,000,000+' 
+-------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------
+     Last Updated     |  Price   | Rating |  Reviews   |         Size         |  Type  |
+----------------------------------------------------------------------------------------
+   'August 3, 2018'   |   '0'    |  4.6   | '1488396'  | 'Varies with device' | 'Free' |
+   'August 2, 2018'   |   '0'    |  4.7   | '1107903'  | 'Varies with device' | 'Free' |
+   'August 6, 2018'   |   '0'    |   4    |  '293080'  |        '25M'         | 'Free' |
+ 'September 21, 2017' | '$10.00' |  4.5   |   '171'    |        '20M'         | 'Paid' |
+  'January 26, 2017'  |   '0'    |  4.1   |  '12452'   | 'Varies with device' | 'Free' |
+  'October 28, 2016'  | '$3.99'  |  4.5   |   '253'    |        '83M'         | 'Paid' |
+  'August 11, 2017'   | '$24.99' |  4.2   |   '168'    |        '25M'         | 'Paid' |
+   'July 26, 2018'    |   '0'    |  4.2   | '10790289' | 'Varies with device' | 'Free' |
+   'July 31, 2018'    |   '0'    |  4.6   |  '57493'   | 'Varies with device' | 'Free' |
+   'July 19, 2018'    |   '0'    |  4.6   | '6466641'  | 'Varies with device' | 'Free' |
+----------------------------------------------------------------------------------------
+================================================================================
+
+
+================================================================================
+NumberAsStringDetector
+================================================================================
+A feature flagged by this linter often takes values that look like numbers.
+For instance, it could contain simple floats, dollar values, or percents.
+
+Quickfix: unless the feature represents a categorical value, it would be better
+represented to the model as the number, itself.
+-----
+Flagged features (and sample values):
+* Installs: '10,000,000+', '1,000,000+'
+* Reviews: '1', '0'
+* Current Ver: '1.0', '1.1'
+* Price: '0', '$0.99'
+================================================================================
