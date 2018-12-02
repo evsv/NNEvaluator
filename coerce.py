@@ -64,3 +64,8 @@ def float_to_int(df, column_name):
     """
     df[column_name] = df[column_name].fillna(0.0).astype(int)
     return df
+
+# TODO
+def convert_types_cc(df):
+    #eg. if column "A1" needed translation to categorical
+    df = coerce_column(df, "A1", TO_CATEGORICAL)
