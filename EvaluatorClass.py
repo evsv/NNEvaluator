@@ -42,6 +42,30 @@ class EvalClass:
         return self._optim_perf_list
 
     def model_compile(self, model, optimiser, loss, metrics, learning_rate = None):
+        """
+        Evaluator class interface to call the Keras Sequential Model Class' 
+        ".compile" method, based on the selected optimiser. 
+        
+        :param model: The Model or EValModel object to be compiled
+        :type model: Keras Sequential Model or EvalModel object
+        :param optimiser: Optimiser to be used in the model fitting process
+                          Currently takes values:
+                            1. sgd
+                            2. rmsprop
+        :type optimiser: str
+        :param loss: Loss function to be used in the model fitting process. 
+                     Takes loss values defined within the Keras API.
+        :type loss: str
+        :param metrics: Metrics to be tracked over the fitting process.
+                        Takes values defined within the Keras API.
+        :type metrics: str (or) list of str
+        :param learning_rate: learning rate to be used by the optimiser.
+                              Defaults to None. The optimisers which currently
+                              use the learning rate parameter are:
+                                1. SGD
+                                2. RMSPROP
+        :param learning_rate: num, optional
+        """
 
         if optimiser == "sgd":
             model.compile(optimizer = SGD(lr = learning_rate),
@@ -57,6 +81,48 @@ class EvalClass:
                        epochs = 50, batch_size = 32,
                        num_of_iterations = 1, learning_rate = 0.001,
                        loss = "mse", metrics = ["mse", "mae", "acc"]):
+        """
+        Evaluation function to iterate over a sequence of optimiser options, 
+        fit the model to track time to train and other metrics, and return list
+        of fitted models. 
+
+        To better estimate the performance of different choices, models can 
+        be repeated a user a specified number of times to construct a 
+        distribution of performance measures.  
+    
+        :param x_train: Covariate training data
+        :type x_train: np array
+        :param y_train: Dependent training data
+        :type y_train: np array
+        :param valid_perc: percentage of training data to be used as a 
+                           validation sample, defaults to 0.2
+        :param valid_perc: float, optional
+        :param epochs: Number of epochs to train the model for, defaults to 50
+        :param epochs: int, optional
+        :param batch_size: Batch size of each bath used in training, 
+                           defaults to 32
+        :param batch_size: int, optional
+        :param num_of_iterations: Number of times model fitting process should
+                                  take place, defaults to 1
+        :param num_of_iterations: int, optional
+        :param learning_rate: Learning rate to be used during the model 
+                              compilation process, defaults to 0.001
+                              Optimisers which currently support the learning 
+                              rate parameter are:
+                                1. SGD
+                                2. RMSProp
+        :param learning_rate: float, optional
+        :param loss: Loss metric to be used in the training process, defaults 
+                     to "mse"
+        :param loss: str, optional
+        :param metrics: Metrics to be tracked over the fitting process.
+                        Takes values defined within the Keras API, 
+                        defaults to ["mse", "mae", "acc"]
+        :param metrics: list, optional
+        :return: [description]
+        :rtype: [type]
+        """
+
 
         self._optim_perf_list = {k: [] for k in self._optimiser_grid}
         optim_model_list = {k: [] for k in self._optimiser_grid}
@@ -89,6 +155,8 @@ class EvalClass:
                 model.set_weights(orig_weights)
 
         return optim_model_list
+
+    
 
 
                 
