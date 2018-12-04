@@ -1,4 +1,5 @@
 import pandas
+import time
 import zipfile
 import numpy as np
 import pandas as pd
@@ -8,13 +9,23 @@ import keras
 from keras.models import Sequential
 from keras import layers
 from  EvaluatorClass import EvalClass
+import coerce
 
+LINT_DATA = False
 # READING IN DATA
 dataZip = zipfile.ZipFile("creditcard.csv.zip")
 df = pd.read_csv(dataZip.open("creditcard.csv"))
+
+
+# READING IN LINTS
+if LINT_DATA:
+    df = coerce.preprocess(df, "lint_outputs/cc_results.txt")
+    df.tail()
+
 df_covar = df.iloc[:, 0:30]
 df_dep = df.iloc[:, 30].values
 
+t0 = time.time()
 # NORMALISING DATA
 scaler = preprocessing.StandardScaler().fit(df_covar)
 df_covar_scaled = scaler.transform(df_covar)
@@ -32,13 +43,12 @@ test_model.add(layers.Dense(units=512, activation='linear', input_dim = 30))
 test_model.add(layers.Dense(units=128, activation='linear'))
 test_model.add(layers.Dense(units=32, activation='linear'))
 test_model.add(layers.Dropout(0.5))
-test_model.add(layers.Dense(units=1, activation='sigmoid')) 
+test_model.add(layers.Dense(units=1, activation='sigmoid'))
 
 eval = EvalClass(model = test_model, optimiser_grid = ["rmsprop"])
-optim_mod_list = eval.eval_optimiser(x_train = covar_train, y_train = dep_train, 
+optim_mod_list = eval.eval_optimiser(x_train = covar_train, y_train = dep_train,
                                      loss = "binary_crossentropy", learning_rate=2e-5,
                                      epochs = 10, metrics = ["accuracy"], num_of_iterations = 2)
 
-optim_mod_list
-
-eval.study_eval_results(optim_mod_list)
+t1 = time.time()
+print("Took {} seconds".format(t1-t0))
