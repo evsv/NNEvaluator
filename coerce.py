@@ -1,11 +1,14 @@
 import pandas as pd
 import numpy as np
+from sklearn import preprocessing
+from sklearn.preprocessing import MinMaxScaler
 
 STRING_TO_NUMBER = 1
 STRING_TO_DATE = 2
 FLOAT_TO_INT = 3
 NUMBER_TO_ENUM = 4
 TO_CATEGORICAL = 5
+NUMBER_TO_ZIPCODE = 6
 
 def coerce_column(df, column_name, lint_code):
     """Coerce columns according to linter recommendation.
@@ -23,6 +26,8 @@ def coerce_column(df, column_name, lint_code):
         return float_to_int(df, column_name)
     elif lint_code == TO_CATEGORICAL:
         return to_categorical(df, column_name)
+    elif lint_code == NUMBER_TO_ZIPCODE:
+        return number_to_zipcode(df, column_name)
 
 def to_categorical(df, column_name):
     """Encode a string column to a one-hot categorical column.
@@ -63,6 +68,16 @@ def float_to_int(df, column_name):
     :return: <Pandas Dataframe> return the modified dataframe
     """
     df[column_name] = df[column_name].fillna(0.0).astype(int)
+    return df
+
+def number_to_zipcode(df, column_name):
+    """Coerce a numeric/float column to a string zipcode column.
+
+    :param df: <Pandas Dataframe>
+    :param column_name: <String> the name of the column to coerce
+    :return: <Pandas Dataframe> return the modified dataframe
+    """
+    df[column_name] = df[column_name].apply(lambda x: str(x).strip()[0:5] if len(str(x).strip()) > 5 else str(x).strip())
     return df
 
 # TODO
