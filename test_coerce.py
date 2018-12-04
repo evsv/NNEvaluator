@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import unittest
 import zipfile
-from coerce import coerce_column, STRING_TO_DATE, STRING_TO_NUMBER, FLOAT_TO_INT, TO_CATEGORICAL
+from coerce import *
 
 class TestCoerce(unittest.TestCase):
 
@@ -35,7 +35,15 @@ class TestCoerce(unittest.TestCase):
             print(df["attacktype1_txt"].tail())
             self.fail("Expected attacktype1_txt column to have been dropped from df")
         except:
-            print(df.tail())
+            print("Original column dropped as expected.")
+
+    def test_to_zipcode(self):
+        """Test number_to_zipcode method."""
+        d = {"col1": [12345, 23456, 34567, 31020301, 132, 20489, 12121, 03434]}
+        df = pd.DataFrame(d)
+        df = coerce_column(df, "col1", NUMBER_TO_ZIPCODE)
+        print(df)
+        print(df.dtypes)
 
 if __name__ == "__main__":
     unittest.main()
