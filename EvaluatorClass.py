@@ -156,7 +156,48 @@ class EvalClass:
 
         return optim_model_list
 
-    
+    def study_eval_results(self, model_dict):
+
+        # CHECKING THE KIND OF HISTORY OBJECT PROVIDED
+        history_keys = model_dict.keys()
+        if set(history_keys) == set(self.optimiser_grid):
+            grid_type = "AN OPTIMISER"
+        elif set(history_keys) == set(self.optimiser_grid):
+            grid_type = "A LOSS"
+        
+        key_str = ", ".join(history_keys)
+        print("THE PROVIDED HISTORY OBJECT CONTAINS MODEL EVALUATIONS OVER " 
+              + grid_type + " GRID AND THE PARAMETERS ARE: " + key_str)
+
+        # PRINTING INFORMATION ON EVALUATION RUN
+        print("DEBUG: history_keys")
+        print(history_keys)
+        history_keys = list(history_keys)
+        metric_list = list(model_dict[history_keys[0]][0].history.history.keys())
+        metric_str = ", ".join(metric_list)
+        print("THE METRICS TRACKED FOR THIS EVALUATION ARE: " + metric_str)            
+
+        # ITERATING ACROSS EACH PARAMETER IN THE PARAMETER GRID
+        for key in history_keys:
+
+            print("\n\nLOOKING AT PERFORMANCE CORRESPONDING TO PARAMETER: "
+                  + key)
+            history_obj_list = [model_obj.history 
+                                    for model_obj in model_dict[key]]
+            
+            # Iterating across each metric being tracked
+            for metric in metric_list:
+                print(metric)
+                metric_array = [obj.history[metric]
+                                    for obj in history_obj_list]
+
+                print(metric_array)
 
 
-                
+testDict = {"key1": 1, "key2": 2}
+tdict = list(testDict.keys())
+keyStr = ", ".join(tdict)
+for k in tdict:
+    print(k)
+
+print([k for k in testDict.keys()])

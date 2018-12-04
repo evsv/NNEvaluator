@@ -38,3 +38,7 @@ eval = EvalClass(model = test_model, optimiser_grid = ["rmsprop"])
 optim_mod_list = eval.eval_optimiser(x_train = covar_train, y_train = dep_train, 
                                      loss = "binary_crossentropy", learning_rate=2e-5,
                                      epochs = 10, metrics = ["accuracy"], num_of_iterations = 2)
+
+optim_mod_list
+
+eval.study_eval_results(optim_mod_list)
