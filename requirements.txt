@@ -40,8 +40,10 @@ PyVCF==0.6.8
 PyYAML==3.13
 requests==2.20.1
 rsa==4.0
+scikit-learn==0.20.1
 scipy==1.1.0
 six==1.11.0
+sklearn==0.0
 tensorboard==1.12.0
 tensorflow==1.12.0
 termcolor==1.1.0
