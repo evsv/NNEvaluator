@@ -25,6 +25,7 @@ def make_dirty(df, frac_rows, frac_cols):
             df.loc[rand_indices, col] = df.loc[rand_indices, col].apply(lambda x: str(x) + '')
 
         else:
-            df.loc[rand_indices, col] = df.loc[rand_indices, col].apply(lambda x: int(x*1.0))
+            try:
+                df.loc[rand_indices, col] = df.loc[rand_indices, col].apply(lambda x: int(x*1.0))
 
     return df
