@@ -13,7 +13,7 @@ def float_to_str(df, obs, col):
 
     # randomly select given number of rows and change values in given column
     for idx in df.sample(n=obs).index:
-        df.set_value(idx, col, str(df.loc[idx][col]), takeable=True)
+        df.set_value(idx, col, str(df.loc[idx][col]) + '', takeable=True)
     return df
 
 def float_to_int(df, obs, col):
