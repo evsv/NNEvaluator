@@ -77,10 +77,10 @@ class EvalClass:
             model.compile(optimizer = optimiser, loss = loss, 
                                 metrics = metrics)
 
-    def eval_optimiser(self, x_train, y_train, valid_perc = 0.2,
-                       epochs = 50, batch_size = 32,
-                       num_of_iterations = 1, learning_rate = 0.001,
-                       loss = "mse", metrics = ["mse", "mae", "acc"]):
+    def eval_optimiser(self, x_train, y_train, valid_perc = 0.2, epochs = 50, 
+                       batch_size = 32, num_of_iterations = 1, 
+                       learning_rate = 0.001, loss = "mse", 
+                       metrics = ["mse", "mae", "acc"], callback_list = None):
         """
         Evaluation function to iterate over a sequence of optimiser options, 
         fit the model to track time to train and other metrics, and return list
@@ -118,7 +118,10 @@ class EvalClass:
         :param metrics: Metrics to be tracked over the fitting process.
                         Takes values defined within the Keras API, 
                         defaults to ["mse", "mae", "acc"]
-        :param metrics: list, optional
+        :param metrics: list of str, optional
+        :param callback_list: Callbacks to be tracked through the training 
+                              process
+        :param callback_list: list of Keras Callbacks, optional
         :return: [description]
         :rtype: [type]
         """
@@ -144,9 +147,10 @@ class EvalClass:
             for i in range(0, num_of_iterations):
                 print(model.get_weights())
                 history = model.fit(x_train, y_train, 
-                                    validation_split = valid_perc,
+                                    validation_split = valid_perc, 
                                     epochs = epochs, batch_size = batch_size,
-                                    verbose = self.fit_verb_flag)
+                                    verbose = self.fit_verb_flag, 
+                                    callbacks = callback_list)
                 
                 self._optim_perf_list[optim].append(history)
                 optim_model_list[optim].append(model)
@@ -192,12 +196,3 @@ class EvalClass:
                                     for obj in history_obj_list]
 
                 print(metric_array)
-
-
-testDict = {"key1": 1, "key2": 2}
-tdict = list(testDict.keys())
-keyStr = ", ".join(tdict)
-for k in tdict:
-    print(k)
-
-print([k for k in testDict.keys()])
