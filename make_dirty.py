@@ -2,33 +2,6 @@ import pandas as pd
 import numpy as np
 import random
 
-def float_to_str(df, obs, col):
-    """Randomly select given no. of elements in a column & convert float to str
-
-    :param df: <Pandas Dataframe> dataframe to made dirty
-    :param trigger: <Int> number of elements to be made dirty
-    :param trigger: <Int> the Index of the column to be made dirty
-    :return: <Pandas Dataframe> return the modified dataframe
-    """
-
-    # randomly select given number of rows and change values in given column
-    for idx in df.sample(n=obs).index:
-        df.set_value(idx, col, str(df.loc[idx][col]) + '', takeable=True)
-    return df
-
-def float_to_int(df, obs, col):
-    """Randomly select given no. of elements in a column & convert float to int
-
-    :param df: <Pandas Dataframe> dataframe to made dirty
-    :param trigger: <Int> number of elements to be made dirty
-    :param trigger: <Int> the Index of the column to be made dirty
-    :return: <Pandas Dataframe> return the modified dataframe
-    """
-    # randomly select given number of rows and change values in given column
-    for idx in df.sample(n=obs).index:
-        df.set_value(idx, col, int(df.loc[idx][col]), takeable=True)
-    return df
-
 def make_dirty(df, frac_rows, frac_cols):
     """Make an input dataset dirty based on size & input dirty fractions
 
@@ -38,20 +11,20 @@ def make_dirty(df, frac_rows, frac_cols):
     :return: <Pandas Dataframe> return the modified dataframe
     """
     N = len(df)
-    iterations = int(len(df.columns)*frac_cols)
-    frac_dirty = int(N*frac_rows)
+    dirty_rows = int(N*frac_rows)
+    dirty_cols = int(len(df.columns)*frac_cols)
+    
+    col_list = np.random.choice(df.columns, dirty_cols, replace=False)
+    for col in col_list:
 
-    # make randomly selected elements dirty
-    for i in range(iterations):
-
-        # choose column & number of observations to make dirty
-        obs = frac_dirty
-        col = random.randint(0,len(df.columns))
-
+        # generate a list of randomly selected indices
+        rand_indices = np.random.choice(df.index, dirty_rows, replace=False)
+        
         flag = random.randint(0, 1)
         if flag == 0:
-            df = float_to_str(df, obs, col)
+            df.loc[rand_indices, col] = df.loc[rand_indices, col].apply(lambda x: str(x) + '')
+
         else:
-            df = float_to_int(df, obs, col)
+            df.loc[rand_indices, col] = df.loc[rand_indices, col].apply(lambda x: int(x*1.0))
 
     return df
