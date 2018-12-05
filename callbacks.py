@@ -26,10 +26,11 @@ class ConvergeTime(keras.callbacks.Callback):
 
     def on_train_end(self, logs={}):
 
-        print("THE MODEL CONVERGED AT EPOCH NUMBER " + str(self.epoch_num + 1))
+        print("THE MODEL CONVERGED AT EPOCH NUMBER " + str(self.converged_epoch_num + 1))
         print("THE MODEL LOSS AT CONVERGERNCE WAS: " + str(self.converged_loss))
         print("THE TIME TAKEN TO CONVERGE (In S): " + str(int(round(self.converged_time))))
-
+        run_time = time() - self.start_time()
+        print("TOTAL TIME (In S): " + str(int(round(run_time))))
         return
 
     def on_epoch_begin(self, epoch, logs={}):
@@ -68,6 +69,7 @@ class ConvergeTime(keras.callbacks.Callback):
                     
                     # setting converged flag to true and recording convergence conditions
                     self.if_converged = True
+                    self.converged_epoch_num = self.epoch_num
                     self.converged_loss = loss_value_window[epoch_overfit_index]
                     self.converged_time = self.time_till_epoch_list[self.num_of_priors + epoch_overfit_index - 1]
 
@@ -79,6 +81,7 @@ class ConvergeTime(keras.callbacks.Callback):
                 if sum((perc_loss_decr <= self.perc_change_thresh)) == (self.num_of_priors - 1):
 
                     self.if_converged = True
+                    self.converged_epoch_num = self.epoch_num
                     self.converged_loss = self.loss_list[self.epoch_num]
                     self.converged_time = self.time_till_epoch_list[self.epoch_num]
 
