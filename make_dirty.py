@@ -29,21 +29,26 @@ def float_to_int(df, obs, col):
         df.set_value(idx, col, int(df.loc[idx][col]), takeable=True)
     return df
 
-def make_dirty(df):
-    """Make an input dataset dirty based on size
+def make_dirty(df, frac_rows, frac_cols):
+    """Make an input dataset dirty based on size & input dirty fractions
 
     :param df: <Pandas Dataframe> dataframe to made dirty
+    :param frac_rows: <float> fraction of observations to be made dirty
+    :param frac_cols: <float> fraction of columns to be made dirty
     :return: <Pandas Dataframe> return the modified dataframe
     """
     N = len(df)
-    iterations = max(10, int(len(df.columns)/3))
+    iterations = int(len(df.columns)*frac_cols)
+    frac_dirty = int(N*frac_rows)
 
     # make randomly selected elements dirty
     for i in range(iterations):
-        obs = max(100, random.randint(1, int(N*0.01)))
+        
+        # choose column & number of observations to make dirty
+        obs = random.randint(int(frac_dirty/2), frac_dirty)
         col = random.randint(0,len(df.columns))
+        
         flag = random.randint(0, 1)
-
         if flag == 0:
             df = float_to_str(df, obs, col)
         else:
