@@ -19,12 +19,17 @@ class ConvergeTime(keras.callbacks.Callback):
         
         self.loss_list = []
         self.time_till_epoch_list = []
-        self.epoch_num = 0
+        self.epoch_num = -1 # Set to -1 to begin epoch indexing at 0
         self.start_time = time()
         self.if_converged = False
         return
 
     def on_train_end(self, logs={}):
+
+        print("THE MODEL CONVERGED AT EPOCH NUMBER " + str(self.epoch_num + 1))
+        print("THE MODEL LOSS AT CONVERGERNCE WAS: " + str(self.converged_loss))
+        print("THE TIME TAKEN TO CONVERGE (In S): " + str(int(round(self.converged_time))))
+
         return
 
     def on_epoch_begin(self, epoch, logs={}):
@@ -33,12 +38,13 @@ class ConvergeTime(keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
         
         # GETTING EPOCH STATS
+        self.epoch_num += 1
         self.loss_list.append(logs.get("val_loss"))
         self.time_till_epoch_list.append(time() - self.start_time)
         
         # START CHECKING FOR CONVERGENCE
         loss_improvement_list = [i-j for i, j in zip(self.loss_list[:-1], self.loss_list[1:])]
-        if self.epoch_num >= self.min_epoch_run:
+        if self.epoch_num >= (self.min_epoch_run - 1):
             if not self.if_converged:
                 # obtaining loss value for user specified number of priod periods
                 loss_value_window = self.loss_list[-1*self.num_of_priors:]
