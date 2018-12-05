@@ -43,11 +43,11 @@ def make_dirty(df, frac_rows, frac_cols):
 
     # make randomly selected elements dirty
     for i in range(iterations):
-        
+
         # choose column & number of observations to make dirty
-        obs = random.randint(int(frac_dirty/2), frac_dirty)
+        obs = frac_dirty
         col = random.randint(0,len(df.columns))
-        
+
         flag = random.randint(0, 1)
         if flag == 0:
             df = float_to_str(df, obs, col)

@@ -4,8 +4,8 @@ import numpy as np
 
 class ConvergeTime(keras.callbacks.Callback):
 
-    def __init__(self, min_epoch_run, perc_change_thresh, num_of_priors):
-        
+    def __init__(self, min_epoch_run, perc_change_thresh, num_of_priors, stop_on_converge=False):
+
         self.min_epoch_run = min_epoch_run
         self.perc_change_thresh = perc_change_thresh
         if num_of_priors <= min_epoch_run:
@@ -14,9 +14,10 @@ class ConvergeTime(keras.callbacks.Callback):
             num_of_priors = 2
         else:
             self.num_of_priors = min_epoch_run
+        self.stop_on_converge = stop_on_converge
 
     def on_train_begin(self, logs={}):
-        
+
         self.loss_list = []
         self.time_till_epoch_list = []
         self.epoch_num = -1 # Set to -1 to begin epoch indexing at 0
@@ -37,12 +38,12 @@ class ConvergeTime(keras.callbacks.Callback):
         return
 
     def on_epoch_end(self, epoch, logs={}):
-        
+
         # GETTING EPOCH STATS
         self.epoch_num += 1
         self.loss_list.append(logs.get("val_loss"))
         self.time_till_epoch_list.append(time() - self.start_time)
-        
+
         # START CHECKING FOR CONVERGENCE
         loss_improvement_list = [i-j for i, j in zip(self.loss_list[:-1], self.loss_list[1:])]
         if self.epoch_num >= (self.min_epoch_run - 1):
@@ -51,9 +52,9 @@ class ConvergeTime(keras.callbacks.Callback):
                 loss_value_window = self.loss_list[-1*self.num_of_priors:]
 
                 # finding the improvement between subsequent epochs
-                loss_improvement_list = [i-j for i, j in zip(loss_value_window[:-1], 
+                loss_improvement_list = [i-j for i, j in zip(loss_value_window[:-1],
                                                             loss_value_window[1:])]
-                
+
                 # finding percentage decrease in loss value between subsequent
                 # epochs
                 loss_value_denominator = loss_value_window[0:(self.num_of_priors - 1)]
@@ -61,17 +62,18 @@ class ConvergeTime(keras.callbacks.Callback):
                 lvd_np_array = np.array(loss_value_denominator)
                 perc_loss_decr = lil_np_array/lvd_np_array
 
-                # checking for overfitting condition, i.e, condition where 
+                # checking for overfitting condition, i.e, condition where
                 # validation loss starts increasing
                 if len(np.where(perc_loss_decr < 0)[0]) != 0:
 
                     epoch_overfit_index = min(np.where(perc_loss_decr < 0)[0])
-                    
+
                     # setting converged flag to true and recording convergence conditions
                     self.if_converged = True
                     self.converged_epoch_num = self.epoch_num
                     self.converged_loss = loss_value_window[epoch_overfit_index]
                     self.converged_time = self.time_till_epoch_list[self.num_of_priors + epoch_overfit_index - 1]
+                    self.model.stop_training = self.stop_on_converge
 
                     return
 
@@ -84,6 +86,7 @@ class ConvergeTime(keras.callbacks.Callback):
                     self.converged_epoch_num = self.epoch_num
                     self.converged_loss = self.loss_list[self.epoch_num]
                     self.converged_time = self.time_till_epoch_list[self.epoch_num]
+                    self.model.stop_training = self.stop_on_converge
 
                     return
 
