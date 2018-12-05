@@ -18,7 +18,8 @@ LINT_DATA = False
 # READING IN DATA
 dataZip = zipfile.ZipFile("creditcard.csv.zip")
 df = pd.read_csv(dataZip.open("creditcard.csv"))
-df = make_dirty(df, .1, .8)
+# TODO
+# df = make_dirty(df, .1, .8)
 
 # READING IN LINTS
 if LINT_DATA:
@@ -51,7 +52,7 @@ test_model.add(layers.Dense(units=1, activation='sigmoid'))
 eval = EvalClass(model = test_model, optimiser_grid = ["rmsprop"])
 optim_mod_list = eval.eval_optimiser(x_train = covar_train, y_train = dep_train,
                                      loss = "binary_crossentropy", learning_rate=2e-5,
-                                     epochs = 15, metrics = ["accuracy"], num_of_iterations = 1, callbacks=[ConvergeTime(5, .0005, 3, stop_on_converge=True)])
+                                     epochs = 7, metrics = ["accuracy"], num_of_iterations = 1, callbacks=[ConvergeTime(5, .0005, 3, stop_on_converge=True)])
 
 t1 = time.time()
 print("Took {} seconds".format(t1-t0))
