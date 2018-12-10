@@ -37,6 +37,7 @@ def cols_to_coerce(lines, trigger, result_dict, coerce_type):
     while lines[i+2:][k][0] == '*':
         line = lines[i+2:][k]
         col = line.split()[1]
+        col = col.strip().replace(":", "")
 
         result_dict[coerce_type].append(col)
         k -= 1

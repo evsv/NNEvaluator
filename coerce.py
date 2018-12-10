@@ -58,7 +58,7 @@ def to_categorical(df, column_name):
     :param column_name: <String> the name of the column to coerce
     :return: <Pandas Dataframe> return the modified dataframe
     """
-    df = df.join(pd.get_dummies(df[column_name]))
+    df = df.join(pd.get_dummies(df[column_name], prefix=column_name))
     df = df.drop(column_name, axis=1)
     return df
 

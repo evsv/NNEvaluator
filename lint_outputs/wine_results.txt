@@ -34,6 +34,4 @@ The tokens can then be used as, for instance, a
 to an [embedding layer](https://github.com/tflearn/tflearn/blob/master/examples/nlp/lstm.py).
 -----
 Flagged features (and sample values):
-* designation: 'This zesty r...ined tannins.', "Stalky aroma...e the finish."
-* variety: 'Gloria Ferre...onoma County)', 'Korbel NV Br... (California)'
 ================================================================================
