@@ -1,0 +1,31 @@
+The following linter(s) triggered on your dataset:
+* NumberAsStringDetector
+
+
+================================================================================
+NumberAsStringDetector
+================================================================================
+A feature flagged by this linter often takes values that look like numbers.
+For instance, it could contain simple floats, dollar values, or percents.
+
+Quickfix: unless the feature represents a categorical value, it would be better
+represented to the model as the number, itself.
+-----
+Flagged features (and sample values):
+* TOTAL UNITS: '1', '0'
+* GROSS SQUARE FEET: '0', '2000'
+* COMMERCIAL UNITS: '1', '0'
+* NEIGHBORHOOD: '3', '4'
+* LOT: '5066', '16'
+* EASE-MENT: '1', '20'
+* SALE PRICE: 'R4', 'D4'
+* BUILDING CLASS AT TIME OF SALE: '1', '2'
+* YEAR BUILT: '0', '2400'
+* TAX CLASS AT TIME OF SALE: '1920', '0'
+* BLOCK: '1', '2'
+* RESIDENTIAL UNITS: '10314', '11354'
+* ADDRESS: 'R4', 'D4'
+* LAND SQUARE FEET: '1', '0'
+* SALE DATE: '0', '10'
+* BOROUGH: '999', '998'
+================================================================================

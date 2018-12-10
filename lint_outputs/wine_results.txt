@@ -1,0 +1,37 @@
+The following linter(s) triggered on your dataset:
+* NumberAsStringDetector
+* TokenizableStringDetector
+
+
+================================================================================
+NumberAsStringDetector
+================================================================================
+A feature flagged by this linter often takes values that look like numbers.
+For instance, it could contain simple floats, dollar values, or percents.
+
+Quickfix: unless the feature represents a categorical value, it would be better
+represented to the model as the number, itself.
+-----
+Flagged features (and sample values):
+* province: '20.0', '15.0'
+* country: '99999', '99998'
+* price: '88', '87'
+================================================================================
+
+
+================================================================================
+TokenizableStringDetector
+================================================================================
+A feature flagged by this linter often contains long strings that have more
+than a handful of unique values.
+This suggests that the feature might have compositional structure that is
+may usefully be exposed to the model. For instance, a sentence may be better
+understood as a sequence (or even set) of words.
+
+Quickfix: [tokenize](https://nlp.stanford.edu/IR-book/html/htmledition/tokenization-1.html) the strings.
+The tokens can then be used as, for instance, a
+[bag of words](https://en.wikipedia.org/wiki/Bag-of-words_model) or the inputs
+to an [embedding layer](https://github.com/tflearn/tflearn/blob/master/examples/nlp/lstm.py).
+-----
+Flagged features (and sample values):
+================================================================================
